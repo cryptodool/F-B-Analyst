@@ -7,7 +7,7 @@ def require_api_key(x_api_key: str | None = Header(default=None, alias=HEADER_NA
     if not settings.API_KEY:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Server API key not configured."
+            detail="Server API key not configured.",
         )
     if not x_api_key or x_api_key != settings.API_KEY:
         raise HTTPException(
@@ -16,4 +16,9 @@ def require_api_key(x_api_key: str | None = Header(default=None, alias=HEADER_NA
         )
     return True
 
-AuthDependency = Depends(require_api_key)
+# Backward compatibility for routers importing `verify_api_key`
+def verify_api_key(x_api_key: str | None = Header(default=None, alias=HEADER_NAME)):
+    return require_api_key(x_api_key)
+
+# Convenience dependency used in main.py (and usable in routers)
+AuthDependency = Depends(verify_api_key)
