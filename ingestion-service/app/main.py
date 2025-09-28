@@ -1,24 +1,23 @@
 from fastapi import FastAPI
-     from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
-     from .routers import upload, files, search, query
+from .routers import upload, files, search, query  # Only valid if run as a package
 
-     app = FastAPI(title="Ingestion Service")
+app = FastAPI(title="Ingestion Service")
 
-     app.add_middleware(
-         CORSMiddleware,
-         allow_origins=["*"],
-         allow_credentials=False,
-         allow_methods=["*"],
-         allow_headers=["*"],
-     )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-     app.include_router(upload.router)
-     app.include_router(files.router)
-     app.include_router(search.router)
-     app.include_router(query.router)
+app.include_router(upload.router)
+app.include_router(files.router)
+app.include_router(search.router)
+app.include_router(query.router)
 
-
-     @app.get("/health")
-     async def health() -> dict[str, str]:
-         return {"status": "ok"}
+@app.get("/health")
+async def health() -> dict[str, str]:  # Requires Python 3.9+
+    return {"status": "ok"}
