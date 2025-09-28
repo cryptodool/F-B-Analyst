@@ -14,12 +14,13 @@ from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, status
   @router.post("")
   async def upload_file(file: UploadFile = File(...)):
       if file.size and file.size > settings.MAX_FILE_SIZE_MB * 1024 * 1024:
-          raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail="File too large")
+          raise HTTPException(
+              status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+              detail="File too large",
+          )
 
       doc_id = str(uuid4())
-      suffix = Path(file.filename).suffix.lower()
-      if not suffix:
-          suffix = ".dat"
+      suffix = Path(file.filename).suffix.lower() or ".dat"
 
       stored_path = base_path / f"{doc_id}{suffix}"
       with stored_path.open("wb") as out:
@@ -38,4 +39,3 @@ from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, status
           "filename": file.filename,
           "chunks": len(chunks),
       }
-
