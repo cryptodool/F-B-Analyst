@@ -1,6 +1,6 @@
 [build]
-  builder = "DOCKERFILE"
-  dockerfilePath = "ingestion-service/Dockerfile"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 
-  [deploy]
-  healthcheckPath = "/health"
+[deploy]
+healthcheckPath = "/health"
