@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import upload, files, search, query  # Only valid if run as a package
+from .routers import upload, files, search, query
 
 app = FastAPI(title="Ingestion Service")
 
@@ -19,5 +19,5 @@ app.include_router(search.router)
 app.include_router(query.router)
 
 @app.get("/health")
-async def health() -> dict[str, str]:  # Requires Python 3.9+
+async def health() -> dict[str, str]:
     return {"status": "ok"}
